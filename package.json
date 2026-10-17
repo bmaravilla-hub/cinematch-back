@@ -1,0 +1,29 @@
+{
+  "name": "cinematch-backend",
+  "version": "1.0.0",
+  "description": "Núcleo y Motor de Recomendación en Node.js + TypeScript con 5 Estructuras de Datos desde cero (PED941 - Universidad Don Bosco)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch index.ts",
+    "server": "tsx index.ts",
+    "start": "tsx index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "@types/supertest": "^6.0.2",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}
