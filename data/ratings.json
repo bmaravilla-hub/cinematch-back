@@ -1,0 +1,122 @@
+[
+  {
+    "id": "r001",
+    "userId": "u001",
+    "movieId": "m101",
+    "score": 5,
+    "createdAt": "2024-02-15",
+    "review": "Una experiencia visual y emocional insuperable. La banda sonora de Hans Zimmer eleva cada escena a otra dimensión."
+  },
+  {
+    "id": "r002",
+    "userId": "u001",
+    "movieId": "m102",
+    "score": 5,
+    "createdAt": "2024-01-20",
+    "review": "Guión brillante y cinematografía revolucionaria. Cada visionado revela nuevas capas de significado."
+  },
+  {
+    "id": "r003",
+    "userId": "u001",
+    "movieId": "m104",
+    "score": 4,
+    "createdAt": "2023-11-10",
+    "review": "La mejor interpretación del Guasón en la historia del cine. Tensa de principio a fin."
+  },
+  {
+    "id": "r004",
+    "userId": "u001",
+    "movieId": "m103",
+    "score": 4,
+    "createdAt": "2024-03-05",
+    "review": "Una escala colosal con un diseño sonoro que vibra en cada fotograma."
+  },
+  {
+    "id": "r005",
+    "userId": "u002",
+    "movieId": "m101",
+    "score": 5,
+    "createdAt": "2024-02-18",
+    "review": "Impresionante viaje espacial, pura poesía científica."
+  },
+  {
+    "id": "r006",
+    "userId": "u002",
+    "movieId": "m102",
+    "score": 4,
+    "createdAt": "2024-01-25",
+    "review": "Concepto fantástico ejecutado con maestría."
+  },
+  {
+    "id": "r007",
+    "userId": "u002",
+    "movieId": "m105",
+    "score": 5,
+    "createdAt": "2024-03-10",
+    "review": "Estética cyberpunk perfecta y una banda sonora vibrante."
+  },
+  {
+    "id": "r008",
+    "userId": "u002",
+    "movieId": "m107",
+    "score": 5,
+    "createdAt": "2024-03-12",
+    "review": "Misterio sci-fi atrapante con giros espectaculares."
+  },
+  {
+    "id": "r009",
+    "userId": "u003",
+    "movieId": "m101",
+    "score": 4,
+    "createdAt": "2024-02-20",
+    "review": "Muy emotiva y visualmente deslumbrante."
+  },
+  {
+    "id": "r010",
+    "userId": "u003",
+    "movieId": "m103",
+    "score": 5,
+    "createdAt": "2024-03-08",
+    "review": "Una obra maestra de la ciencia ficción contemporánea."
+  },
+  {
+    "id": "r011",
+    "userId": "u003",
+    "movieId": "m108",
+    "score": 5,
+    "createdAt": "2024-03-15",
+    "review": "Coreografías de acción y ambientación histórica sublime."
+  },
+  {
+    "id": "r012",
+    "userId": "u003",
+    "movieId": "m105",
+    "score": 4,
+    "createdAt": "2024-03-16",
+    "review": "Gran ambientación distópica y ritmo constante."
+  },
+  {
+    "id": "r013",
+    "userId": "u004",
+    "movieId": "m110",
+    "score": 5,
+    "createdAt": "2024-01-10",
+    "review": "Sensibilidad y emoción pura. Una joya."
+  },
+  {
+    "id": "r014",
+    "userId": "u004",
+    "movieId": "m111",
+    "score": 4,
+    "createdAt": "2024-02-05",
+    "review": "Viajes en el tiempo con giros bien construidos."
+  },
+  {
+    "id": "r015",
+    "userId": "u004",
+    "movieId": "m112",
+    "score": 4,
+    "createdAt": "2024-02-28",
+    "review": "Adrenalina pura sin descanso."
+  }
+]
