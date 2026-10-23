@@ -45,6 +45,17 @@ El sistema integra:
    - `GET /api/recommendations`: Generación de recomendaciones personalizadas o fallback.
 5. **Suite de 75 pruebas automatizadas:**
    - 10 suites de prueba con Vitest y Supertest que cubren pruebas unitarias de estructuras, auditoría de carga, integración REST, persistencia y recuperación de fallos.
+   - **Distribución de las 75 pruebas:**
+     - `HashTable.test.ts`: 9 pruebas (colisiones DJB2, factor de carga $\alpha \ge 0.75$, claves genéricas, caso límite `undefined`).
+     - `LinkedList.test.ts`: 7 pruebas (punteros `head`/`tail`, `insertOrUpdate`, iterador nativo, unicidad).
+     - `BipartiteGraph.test.ts`: 6 pruebas (bipartición $V_U \cap V_M = \emptyset$, simetría no dirigida, aristas 1–5, `removeEdge`).
+     - `AVLTree.test.ts`: 8 pruebas (4 rotaciones LL/RR/LR/RL, factor de balance $FB \in \{-1, 0, 1\}$, clave `titulo#id`).
+     - `PriorityQueue.test.ts`: 6 pruebas (Max-Heap binario, ordenamiento Top-K, desempate FIFO determinista).
+     - `stress_audit.test.ts`: 10 pruebas (inserción de 500+ elementos, estrés de factor de carga y árbol balanceado).
+     - `RecommendationEngine.test.ts`: 7 pruebas (similitud del coseno, Top-K Max-Heap, exclusión RN10, fallback AVL RN09).
+     - `api.test.ts`: 11 pruebas (endpoints REST con Supertest, validaciones HTTP 200, 400 y 404).
+     - `persistence.test.ts`: 7 pruebas (escritura segura, recuperación post-reinicio, atomicidad y rollback RAM-disco).
+     - `sync_regression.test.ts`: 4 pruebas (consistencia reactiva, aislamiento entre usuarios y concurrencia).
 
 ---
 
