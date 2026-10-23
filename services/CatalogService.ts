@@ -160,4 +160,50 @@ export class CatalogService {
   public getRatingsFilePath(): string {
     return this.ratingsFilePath;
   }
+
+  public getStructuresStats() {
+    return {
+      success: true,
+      timestamp: new Date().toISOString(),
+      structures: {
+        hashTable: {
+          nombre: "Tabla Hash (Separate Chaining)",
+          usuariosIndexados: this.engine.getUsersHashSize(),
+          peliculasIndexadas: this.engine.getMoviesHashSize(),
+          algoritmoHash: "DJB2 Polinomial (hash * 31 + char)",
+          complejidadTemporal: "O(1) promedio"
+        },
+        bipartiteGraph: {
+          nombre: "Grafo Bipartito Ponderado No Dirigido",
+          nodosUsuario: this.engine.getGraphUserCount(),
+          nodosPelicula: this.engine.getGraphMovieCount(),
+          aristasCalificacion: this.engine.getGraphEdgeCount(),
+          pesosValidos: "1 a 5 estrellas",
+          propiedadBipartita: "Disjunta (V_U ∩ V_M = ∅)"
+        },
+        avlTree: {
+          nombre: "Árbol AVL Auto-Balanceado",
+          totalNodos: this.engine.getAVLSize(),
+          alturaArbol: this.engine.getAVLHeight(),
+          balanceado: this.engine.isAVLBalanced(),
+          factorBalancePermitido: "[-1, 0, 1]",
+          claveOrdenamiento: "titulo#id",
+          complejidadBusqueda: "O(log n)"
+        },
+        linkedList: {
+          nombre: "Lista Simplemente Enlazada (Head/Tail)",
+          totalCalificaciones: this.engine.getRatingsListSize(),
+          punterosExtremos: "head y tail en O(1)",
+          controlDuplicados: "insertOrUpdate activo"
+        },
+        priorityQueue: {
+          nombre: "Cola de Prioridad Max-Heap Binaria",
+          proposito: "Selección Top-K de vecinos y recomendaciones",
+          propiedadHeap: "Padre >= Hijos",
+          desempate: "Determinista FIFO",
+          complejidadExtraccion: "O(log n) via siftDown"
+        }
+      }
+    };
+  }
 }

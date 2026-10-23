@@ -14,6 +14,12 @@ router.get('/health', (_req, res) => {
   });
 });
 
+router.get('/structures', async (_req, res) => {
+  const { CatalogService } = await import('../services/CatalogService');
+  const service = CatalogService.getInstance();
+  res.status(200).json(service.getStructuresStats());
+});
+
 router.use('/movies', movieRoutes);
 router.use('/ratings', ratingRoutes);
 router.use('/recommendations', recommendationRoutes);
