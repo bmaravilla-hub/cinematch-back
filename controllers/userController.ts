@@ -23,7 +23,10 @@ export const userController = {
         data: newUser
       });
     } catch (error: any) {
-      const status = error.message.includes('ya existe') ? 409 : 500;
+      const isConflict =
+        error.message?.includes('ya existe') ||
+        error.message?.includes('ya se encuentra registrado');
+      const status = isConflict ? 409 : 500;
       res.status(status).json({
         success: false,
         message: error.message || 'Error interno al registrar el usuario'
