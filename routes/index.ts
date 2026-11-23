@@ -2,6 +2,7 @@ import { Router } from 'express';
 import movieRoutes from './movieRoutes';
 import ratingRoutes from './ratingRoutes';
 import recommendationRoutes from './recommendationRoutes';
+import userRoutes from './userRoutes';
 
 const router = Router();
 
@@ -23,5 +24,6 @@ router.get('/structures', async (_req, res) => {
 router.use('/movies', movieRoutes);
 router.use('/ratings', ratingRoutes);
 router.use('/recommendations', recommendationRoutes);
+router.use('/users', userRoutes);
 
 export default router;

@@ -6,6 +6,13 @@ export interface User {
   myListMovieIds?: string[];
 }
 
+export interface CreateUserDTO {
+  id?: string;
+  name: string;
+  email: string;
+  avatarUrl?: string;
+}
+
 export type MovieType = 'movie' | 'series';
 
 export interface Movie {
