@@ -42,6 +42,23 @@ export class BipartiteGraph {
     return this.nodeTypes.get(id);
   }
 
+  public removeNode(id: string): boolean {
+    if (!this.nodeTypes.has(id)) return false;
+    const edges = this.adjacencyLists.get(id);
+    if (edges && !edges.isEmpty()) {
+      edges.forEach((edge: GraphEdge) => {
+        const targetList = this.adjacencyLists.get(edge.targetId);
+        if (targetList) {
+          targetList.remove((e: GraphEdge) => e.targetId === id);
+          if (this.edgeCount > 0) this.edgeCount--;
+        }
+      });
+    }
+    this.adjacencyLists.remove(id);
+    this.nodeTypes.remove(id);
+    return true;
+  }
+
   public addEdge(userId: string, movieId: string, weight: number): void {
     if (weight < 1 || weight > 5 || !Number.isFinite(weight)) {
       throw new Error(`Calificación inválida: ${weight}. Debe ser un número entre 1 y 5.`);

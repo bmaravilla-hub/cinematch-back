@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { RecommendationEngine } from './RecommendationEngine';
-import type { Movie, User, Rating, RecommendationResult } from '../models';
+import type { Movie, User, Rating, RecommendationResult, CreateUserDTO } from '../models';
 
 import moviesData from '../data/movies.json';
 import usersData from '../data/users.json';
@@ -48,35 +48,63 @@ export class CatalogService {
   private static instance: CatalogService | null = null;
   private engine: RecommendationEngine;
   private ratingsFilePath: string;
+  private usersFilePath: string;
 
-  constructor(customRatingsFilePath?: string) {
+  constructor(customRatingsFilePath?: string, customUsersFilePath?: string) {
     this.ratingsFilePath =
       customRatingsFilePath ||
       process.env.RATINGS_FILE_PATH ||
       path.resolve(__dirname, '../data/ratings.store.json');
 
+    this.usersFilePath =
+      customUsersFilePath ||
+      process.env.USERS_FILE_PATH ||
+      path.resolve(__dirname, '../data/users.store.json');
+
     this.engine = new RecommendationEngine(2);
     this.initializeData();
   }
 
-  public static getInstance(customRatingsFilePath?: string): CatalogService {
+  public static getInstance(customRatingsFilePath?: string, customUsersFilePath?: string): CatalogService {
     if (!CatalogService.instance) {
-      CatalogService.instance = new CatalogService(customRatingsFilePath);
+      CatalogService.instance = new CatalogService(customRatingsFilePath, customUsersFilePath);
     }
     return CatalogService.instance;
   }
 
-
-  public static resetInstance(customRatingsFilePath?: string): CatalogService {
-    CatalogService.instance = new CatalogService(customRatingsFilePath);
+  public static resetInstance(customRatingsFilePath?: string, customUsersFilePath?: string): CatalogService {
+    CatalogService.instance = new CatalogService(customRatingsFilePath, customUsersFilePath);
     return CatalogService.instance;
   }
-
 
   public initializeData(): void {
-    for (const user of usersData as User[]) {
+    let usersToLoad: User[] = [];
+    if (fs.existsSync(this.usersFilePath)) {
+      try {
+        const fileContent = fs.readFileSync(this.usersFilePath, 'utf-8').trim();
+        if (fileContent) {
+          const parsed = JSON.parse(fileContent);
+          if (Array.isArray(parsed)) {
+            usersToLoad = parsed;
+          }
+        }
+      } catch (err) {
+        console.warn(`[CatalogService] Error leyendo archivo de persistencia ${this.usersFilePath}, usando semilla:`, err);
+        usersToLoad = usersData as User[];
+      }
+    } else {
+      usersToLoad = usersData as User[];
+      try {
+        safeReplaceJsonSync(this.usersFilePath, usersToLoad);
+      } catch (err) {
+        console.warn(`[CatalogService] No se pudo crear archivo inicial de persistencia de usuarios:`, err);
+      }
+    }
+
+    for (const user of usersToLoad) {
       this.engine.registerUser(user);
     }
+
     for (const movie of moviesData as Movie[]) {
       this.engine.registerMovie(movie);
     }
@@ -97,7 +125,6 @@ export class CatalogService {
         ratingsToLoad = seedRatingsData as Rating[];
       }
     } else {
-
       ratingsToLoad = seedRatingsData as Rating[];
       try {
         safeReplaceJsonSync(this.ratingsFilePath, ratingsToLoad);
@@ -105,7 +132,6 @@ export class CatalogService {
         console.warn(`[CatalogService] No se pudo crear archivo inicial de persistencia:`, err);
       }
     }
-
 
     for (const rating of ratingsToLoad) {
       this.engine.registerRating(rating);
@@ -124,6 +150,47 @@ export class CatalogService {
 
   public getUserById(id: string): User | undefined {
     return this.engine.getUser(id);
+  }
+
+  public getAllUsers(): User[] {
+    return this.engine.getAllUsers();
+  }
+
+  public registerNewUser(userDto: CreateUserDTO): User {
+    const existingUsers = this.getAllUsers();
+
+    if (userDto.id && this.engine.getUser(userDto.id)) {
+      throw new Error(`El usuario con ID '${userDto.id}' ya existe en el sistema`);
+    }
+
+    const emailNormalized = userDto.email.trim().toLowerCase();
+    if (existingUsers.some((u) => u.email.toLowerCase() === emailNormalized)) {
+      throw new Error(`El correo '${userDto.email}' ya se encuentra registrado`);
+    }
+
+    const userId = userDto.id || `u00${existingUsers.length + 1}`;
+    const newUser: User = {
+      id: userId,
+      name: userDto.name.trim(),
+      email: emailNormalized,
+      avatarUrl:
+        userDto.avatarUrl ||
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      myListMovieIds: []
+    };
+
+    this.engine.registerUser(newUser);
+
+    try {
+      const allUsers = this.getAllUsers();
+      safeReplaceJsonSync(this.usersFilePath, allUsers);
+    } catch (err) {
+      this.engine.rollbackUser(newUser.id);
+      console.error(`[CatalogService] Error persistiendo usuario ${newUser.id}. Rollback ejecutado:`, err);
+      throw new Error(`Fallo de persistencia: no se pudo guardar el usuario en disco. Causa: ${(err as Error).message}`);
+    }
+
+    return newUser;
   }
 
 
@@ -159,6 +226,10 @@ export class CatalogService {
 
   public getRatingsFilePath(): string {
     return this.ratingsFilePath;
+  }
+
+  public getUsersFilePath(): string {
+    return this.usersFilePath;
   }
 
   public getStructuresStats() {

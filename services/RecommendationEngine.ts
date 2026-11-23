@@ -311,6 +311,15 @@ export class RecommendationEngine {
     return this.usersHash.get(id);
   }
 
+  public getAllUsers(): User[] {
+    return this.usersHash.values();
+  }
+
+  public rollbackUser(userId: string): void {
+    this.usersHash.remove(userId);
+    this.graph.removeNode(userId);
+  }
+
   public getMovie(id: string): Movie | undefined {
     return this.moviesHash.get(id);
   }
