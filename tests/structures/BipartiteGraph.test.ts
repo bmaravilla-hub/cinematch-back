@@ -92,4 +92,31 @@ describe('Estructura 3: Grafo Bipartito Ponderado No Dirigido (BipartiteGraph)',
     const candidatesU4 = graph.getSharedCandidateUsers('U4');
     expect(candidatesU4).toEqual([]);
   });
+
+  it('debe ejecutar recorrido formal BFS por niveles de profundidad sin ciclos infinitos', () => {
+    const graph = new BipartiteGraph();
+    // U1 califica P1 y P2
+    graph.addEdge('U1', 'P1', 5);
+    graph.addEdge('U1', 'P2', 3);
+    // U2 califica P1 y P3
+    graph.addEdge('U2', 'P1', 4);
+    graph.addEdge('U2', 'P3', 5);
+
+    // BFS desde U1 hasta profundidad 2
+    const bfsNodes = graph.bfs('U1', 2);
+
+    // Nivel 1: Películas conectadas con U1 (P1 y P2)
+    const level1 = bfsNodes.filter((n) => n.depth === 1).map((n) => n.id);
+    expect(level1.sort()).toEqual(['P1', 'P2']);
+
+    // Nivel 2: Usuarios que calificaron esas películas (U2)
+    const level2 = bfsNodes.filter((n) => n.depth === 2).map((n) => n.id);
+    expect(level2).toEqual(['U2']);
+
+    // U1 no debe aparecer como nodo descubierto de sí mismo
+    expect(bfsNodes.some((n) => n.id === 'U1')).toBe(false);
+
+    // Nodo inexistente retorna vacío
+    expect(graph.bfs('nodo_inexistente', 2)).toEqual([]);
+  });
 });
