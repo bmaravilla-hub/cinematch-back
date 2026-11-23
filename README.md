@@ -3,7 +3,7 @@
 > **Universidad Don Bosco — Facultad de Ingeniería**  
 > **Asignatura:** Programación con Estructuras de Datos (PED941) — Grupo G01T  
 > **Docente:** Ing. Carmen Celia Morales Samayoa  
-> **Fase II: Avance Funcional — Backend Independiente**  
+> **Fase III: Entrega Final y Defensa de Proyecto — Backend Independiente**  
 > **Calificación Fase I:** 10.0 / 10.0  
 
 ---
@@ -28,6 +28,7 @@ El sistema integra:
    - `structures/BipartiteGraph.ts`: Grafo bipartito ponderado no dirigido ($V_U$ usuarios y $V_M$ películas) con pesos de calificación entre 1 y 5, exploración de vecinos afines y desvinculación segura (`removeEdge`).
    - `structures/AVLTree.ts`: Árbol AVL estrictamente auto-balanceado con cálculo de factor de balance ($FB \in \{-1, 0, 1\}$), 4 rotaciones canónicas (LL, RR, LR, RL) y clave compuesta `titulo#id`.
    - `structures/PriorityQueue.ts`: Max-Heap binario para selección Top-K y priorización de recomendaciones con desempate determinista FIFO ante puntajes idénticos.
+   - `structures/Queue.ts`: Cola FIFO canónica basada en nodos enlazados ($O(1)$ `enqueue`/`dequeue`) utilizada en el algoritmo formal de Recorrido en Anchura (`bfs`) sobre el Grafo Bipartito.
 2. **Motor de Recomendaciones (`services/RecommendationEngine.ts`):**
    - Filtrado colaborativo basado en usuarios (*User-Based Collaborative Filtering*).
    - Similitud del Coseno ponderada entre historiales de evaluación compartidos.
@@ -38,6 +39,9 @@ El sistema integra:
    - Reversión automática en memoria ante fallos en I/O de disco para garantizar consistencia ACID.
 4. **Servicios y Controladores REST:**
    - `GET /api/health`: Estado de salud del servicio.
+   - `GET /api/users`: Catálogo completo de usuarios registrados.
+   - `GET /api/users/:id`: Consulta instantánea de usuario en $O(1)$ vía Tabla Hash.
+   - `POST /api/users`: Registro dinámico de nuevos usuarios con validación y persistencia atómica.
    - `GET /api/movies`: Consulta del catálogo ordenado alfabéticamente vía Árbol AVL.
    - `GET /api/movies/:id`: Búsqueda instantánea en $O(1)$ vía Tabla Hash.
    - `GET /api/ratings/:userId`: Historial de calificaciones emitidas por el usuario.
@@ -54,6 +58,7 @@ El sistema integra:
      - `stress_audit.test.ts`: 10 pruebas (inserción de 500+ elementos, estrés de factor de carga y árbol balanceado).
      - `RecommendationEngine.test.ts`: 7 pruebas (similitud del coseno, Top-K Max-Heap, exclusión RN10, fallback AVL RN09).
      - `api.test.ts`: 11 pruebas (endpoints REST con Supertest, validaciones HTTP 200, 400 y 404).
+     - `users_api.test.ts`: 10 pruebas (registro de usuarios, validaciones 400, conflicto 409, consulta $O(1)$ y cold-start).
      - `persistence.test.ts`: 7 pruebas (escritura segura, recuperación post-reinicio, atomicidad y rollback RAM-disco).
      - `sync_regression.test.ts`: 4 pruebas (consistencia reactiva, aislamiento entre usuarios y concurrencia).
 
@@ -65,7 +70,7 @@ El sistema integra:
 # 1. Instalar dependencias
 npm install
 
-# 2. Ejecutar la suite completa de 75 pruebas automatizadas
+# 2. Ejecutar la suite completa de 91 pruebas automatizadas
 npm test
 
 # 3. Compilar el proyecto TypeScript
@@ -95,7 +100,7 @@ CineMatch-Back/
 │   ├── HashTable.ts        # Tabla Hash genérica con DJB2 y Separate Chaining
 │   ├── LinkedList.ts       # Lista simplemente enlazada con head/tail
 │   └── PriorityQueue.ts    # Cola de prioridad Max-Heap binaria
-├── tests/                  # Suite de 75 pruebas automatizadas
+├── tests/                  # Suite de 91 pruebas automatizadas
 │   ├── integration/        # Pruebas de integración HTTP y regresión de sincronización
 │   ├── services/           # Pruebas del Motor de Recomendación y Persistencia
 │   └── structures/         # Pruebas unitarias de las 5 estructuras y pruebas de estrés
