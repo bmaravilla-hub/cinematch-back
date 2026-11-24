@@ -7,7 +7,7 @@ describe('Paso 5 y 6: Pruebas de Integración de la API HTTP', () => {
     const res = await request(app).get('/api/health');
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('ok');
-    expect(res.body.phase).toBe('Fase II');
+    expect(res.body.phase).toBe('Fase III');
   });
 
   describe('Endpoints de Catálogo (/api/movies)', () => {

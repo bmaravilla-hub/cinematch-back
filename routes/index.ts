@@ -10,7 +10,7 @@ router.get('/health', (_req, res) => {
   res.status(200).json({
     status: 'ok',
     project: 'CineMatch PED941',
-    phase: 'Fase II',
+    phase: 'Fase III',
     timestamp: new Date().toISOString()
   });
 });
